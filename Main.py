@@ -10,7 +10,11 @@ clab = "Clab.otf"
 product = "Product Sans Regular.ttf"
 blackout = "Blackout Sunrise.ttf"
 dillan = "Dillan.otf"
-deco = "Deco.ttf"
+market_deco = "market deco.ttf"
+harlem_deco = "harlem deco.ttf"
+retrolight = "Retrolight.ttf"
+london = "Old London.ttf"
+
 
 class DateFront:
 
@@ -47,14 +51,17 @@ class DateFront:
 
 front = DateFront(im)
 
-front.add_whitespace(30)
-front.draw_text("Mei", deco, 65)
-front.draw_underline(offfset=3, w=2)
-front.add_whitespace(28)
-front.draw_text("16", deco, 200)
+front.add_whitespace(25)
+front.draw_text("JANUARI", harlem_deco, 45)
+front.draw_underline(offfset=22, w=2)
+front.add_whitespace(22)
+front.draw_text("18", market_deco, 200)
 front.add_whitespace(27)
-front.draw_text("Woensdag", franchise, 65)
-front.draw_sidebars(offset=10, w=4)
+front.draw_text("Donderdag", franchise, 55)
+front.draw_sidebars(offset=10, w=3)
+front.add_whitespace(25)
+front.draw_text("Daily Times", london, 50)
+front.draw_underline(offfset=3, w=2)
 
 # draw_text(im, 30, "Mei", deco, 65)
 # ImageDraw.Draw(im).line((70, 100, 310, 100), fill="black", width=2)
@@ -62,3 +69,4 @@ front.draw_sidebars(offset=10, w=4)
 # draw_text(im, 300, "Zondag", franchise, 55)
 
 im.show()
+im.save("date.png")

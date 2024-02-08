@@ -11,13 +11,14 @@ market_deco = "market deco.ttf"
 harlem_deco = "harlem deco.ttf"
 retrolight = "Retrolight.ttf"
 london = "Old London.ttf"
+linux = "Linux.ttf"
 
 
 class Frame:
 
     def __init__(self, width=384):
         self.width = width
-        self.image = Image.new("RGB", (self.width, 500), "white")
+        self.image = Image.new("RGB", (self.width, 1000), "white")
         self.d = ImageDraw.Draw(self.image)
         self.current_h = 0
         self.boxcoords = ()
@@ -32,9 +33,9 @@ class Frame:
 
     def draw_text(self, text, font, size):
         font = ImageFont.truetype(font, size)
-        self.boxcoords = self.d.textbbox((0, 0), text, font=font)
+        self.boxcoords = self.d.textbbox((0, 0), text, font=font, align="center", spacing=4)
         textwidth = self.boxcoords[2] - self.boxcoords[0]
-        self.d.text((self.width/2 - textwidth / 2, self.current_h), text, fill="black", font=font, align="center")
+        self.d.text((self.width/2 - textwidth / 2, self.current_h), text, fill="black", font=font, align="center", spacing=4)
         h_increment = self.boxcoords[3] - self.boxcoords[1]
         self.current_h += h_increment
 
@@ -75,6 +76,7 @@ class Frame:
         self.d.line((x2, (y1+y2)//2, self.width, (y1+y2)//2), fill="black", width=w)
 
     def show(self):
+        self.image = self.image.crop((0, 0, self.width, self.current_h))
         self.image.show()
 
 
@@ -103,7 +105,8 @@ def create_quote():
 
     frame.paste_im("Images/quote_header.png")
     frame.add_whitespace(25)
-    frame.text_wrap(quote, product, 30, 270)
+    frame.text_wrap(quote, linux, 35, 320)
+    frame.add_whitespace(35)
 
     frame.show()
 

@@ -41,10 +41,11 @@ class Frame:
 
     def text_wrap(self, text, font, size, max_width):
 
-        # self.d.rectangle((self.width / 2 - max_width / 2, 0, self.width / 2 + max_width / 2, 500), outline="black")
+        self.d.rectangle((self.width / 2 - max_width / 2, 0, self.width / 2 + max_width / 2, 500), outline="black")
 
         font_t = ImageFont.truetype(font, size)
         wordlist = text.split(" ")
+        textlist = text.split(" ")
         split_i = 0
 
         for i in range(len(wordlist)):
@@ -53,11 +54,16 @@ class Frame:
             boxcoords = self.d.textbbox((0, 0), linestring, font=font_t)
             textwidth = boxcoords[2] - boxcoords[0]
 
-            if textwidth > max_width:
-                wordlist.insert(i, "\n")
+            if textwidth > max_width and i - split_i > 1:
+                textlist.insert(i, "\n")
                 split_i = i
 
-        self.draw_text(" ".join(wordlist), font, size)
+            if textwidth > max_width:
+                textlist.insert(i+1 + split_i, "\n")
+                split_i = i + 1
+
+        self.draw_text(" ".join(textlist), font, size)
+        print(wordlist)
 
 
 
@@ -104,8 +110,8 @@ def create_quote():
     frame = Frame()
 
     frame.paste_im("Images/quote_header.png")
-    frame.add_whitespace(25)
-    frame.text_wrap(quote, linux, 35, 320)
+    frame.add_whitespace(20)
+    frame.text_wrap(quote, linux, 35, 300)
     frame.add_whitespace(35)
 
     frame.show()

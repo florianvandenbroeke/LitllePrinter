@@ -23,6 +23,10 @@ class Frame:
         self.current_h = 0
         self.boxcoords = ()
 
+    def draw_line(self):
+        self.d.line((0, self.current_h, self.width, self.current_h), width=1, fill="red")
+        self.current_h += 1
+
     def paste_im(self, path):
         to_paste = Image.open(path)
         self.image.paste(to_paste)
@@ -33,39 +37,38 @@ class Frame:
 
     def draw_text(self, text, font, size):
         font = ImageFont.truetype(font, size)
-        self.boxcoords = self.d.textbbox((0, 0), text, font=font, align="center", spacing=4)
-        textwidth = self.boxcoords[2] - self.boxcoords[0]
-        self.d.text((self.width/2 - textwidth / 2, self.current_h), text, fill="black", font=font, align="center", spacing=4)
+        offset = font.getmetrics()[1]
+        self.d.text((self.width/2, self.current_h - offset), text, fill="black", font=font, align="center", spacing=4, anchor="ma")
+        self.boxcoords = self.d.textbbox((self.width/2, self.current_h - offset), text, anchor="ma", font=font, align="center", spacing=4)
+        self.d.rectangle(self.boxcoords, outline="black")
         h_increment = self.boxcoords[3] - self.boxcoords[1]
         self.current_h += h_increment
 
     def text_wrap(self, text, font, size, max_width):
 
-        self.d.rectangle((self.width / 2 - max_width / 2, 0, self.width / 2 + max_width / 2, 500), outline="black")
+        # self.d.rectangle((self.width / 2 - max_width / 2, 0, self.width / 2 + max_width / 2, 1000), outline="black")
 
         font_t = ImageFont.truetype(font, size)
         wordlist = text.split(" ")
-        textlist = text.split(" ")
-        split_i = 0
+        line = []
+        textlist = []
 
-        for i in range(len(wordlist)):
+        for word in wordlist:
 
-            linestring = " ".join(wordlist[split_i:i+1])
-            boxcoords = self.d.textbbox((0, 0), linestring, font=font_t)
-            textwidth = boxcoords[2] - boxcoords[0]
+            line.append(word)
+            linewidth = self.d.textbbox((0, 0), " ".join(line), font=font_t)[2]
 
-            if textwidth > max_width and i - split_i > 1:
-                textlist.insert(i, "\n")
-                split_i = i
+            if linewidth > max_width:
+                textlist += line[:-1]
+                textlist.append("\n")
+                line = [line[-1]]
 
-            if textwidth > max_width:
-                textlist.insert(i+1 + split_i, "\n")
-                split_i = i + 1
+        textlist += line
+
+        if textlist[0] == "\n":
+            textlist.pop(0)
 
         self.draw_text(" ".join(textlist), font, size)
-        print(wordlist)
-
-
 
     def draw_underline(self, offfset, w):
         x1, y1 = self.boxcoords[0], self.boxcoords[3] + offfset
@@ -110,9 +113,13 @@ def create_quote():
     frame = Frame()
 
     frame.paste_im("Images/quote_header.png")
+    frame.draw_line()
     frame.add_whitespace(20)
+    frame.draw_line()
     frame.text_wrap(quote, linux, 35, 300)
+    frame.draw_line()
     frame.add_whitespace(35)
+    frame.draw_line()
 
     frame.show()
 

@@ -12,16 +12,18 @@ harlem_deco = "harlem deco.ttf"
 retrolight = "Retrolight.ttf"
 london = "Old London.ttf"
 linux = "Linux.ttf"
+normal = "new normal.ttf"
 
 
 class Frame:
 
     def __init__(self, width=384):
+        self.boxcoords = None
         self.width = width
         self.image = Image.new("RGB", (self.width, 1000), "white")
         self.d = ImageDraw.Draw(self.image)
         self.current_h = 0
-        self.boxcoords = ()
+        # self.boxcoords = ()
 
     def draw_line(self):
         self.d.line((0, self.current_h, self.width, self.current_h), width=1, fill="red")
@@ -29,24 +31,46 @@ class Frame:
 
     def paste_im(self, path):
         to_paste = Image.open(path)
-        self.image.paste(to_paste)
+        self.image.paste(to_paste, box=(0, self.current_h))
         self.current_h += to_paste.height
 
     def add_whitespace(self, space):
         self.current_h += space
 
-    def draw_text(self, text, font, size):
+    def draw_center_text(self, text, font, size, cbox=False, add_offset=0):
         font = ImageFont.truetype(font, size)
-        offset = font.getmetrics()[1]
-        self.d.text((self.width/2, self.current_h - offset), text, fill="black", font=font, align="center", spacing=4, anchor="ma")
-        self.boxcoords = self.d.textbbox((self.width/2, self.current_h - offset), text, anchor="ma", font=font, align="center", spacing=4)
-        self.d.rectangle(self.boxcoords, outline="black")
+        self.boxcoords = self.d.textbbox((self.width/2, self.current_h), text, anchor="ma", font=font, align="center", spacing=4)
+        offset = self.boxcoords[1] - self.current_h
+        self.d.text((self.width/2 + add_offset, self.current_h - offset), text, fill="black", font=font, align="center", spacing=4, anchor="ma")
+        if cbox:
+            self.boxcoords = self.d.textbbox((self.width/2 + add_offset, self.current_h - offset), text, anchor="ma", font=font, align="center", spacing=4)
+            self.d.rectangle(self.boxcoords, outline="black")
         h_increment = self.boxcoords[3] - self.boxcoords[1]
         self.current_h += h_increment
 
-    def text_wrap(self, text, font, size, max_width):
+    def draw_left_text(self, text, font, size, cbox=False, add_offset=0):
+        font = ImageFont.truetype(font, size)
+        self.boxcoords = self.d.textbbox((self.width/2, self.current_h), text, anchor="la", font=font, align="left", spacing=4)
+        offset = self.boxcoords[1] - self.current_h
+        self.d.text((add_offset, self.current_h - offset), text, fill="black", font=font, align="left", spacing=4, anchor="la")
+        if cbox:
+            self.boxcoords = self.d.textbbox((add_offset, self.current_h - offset), text, anchor="la", font=font, align="left", spacing=4)
+            self.d.rectangle(self.boxcoords, outline="black")
+        h_increment = self.boxcoords[3] - self.boxcoords[1]
+        self.current_h += h_increment
 
-        # self.d.rectangle((self.width / 2 - max_width / 2, 0, self.width / 2 + max_width / 2, 1000), outline="black")
+    def draw_right_text(self, text, font, size, cbox=False, add_offset=0):
+        font = ImageFont.truetype(font, size)
+        self.boxcoords = self.d.textbbox((self.width/2, self.current_h), text, anchor="ra", font=font, align="right", spacing=4)
+        offset = self.boxcoords[1] - self.current_h
+        self.d.text((self.width - add_offset, self.current_h - offset), text, fill="black", font=font, align="right", spacing=4, anchor="ra")
+        if cbox:
+            self.boxcoords = self.d.textbbox((self.width - add_offset, self.current_h - offset), text, anchor="ra", font=font, align="right", spacing=4)
+            self.d.rectangle(self.boxcoords, outline="black")
+        h_increment = self.boxcoords[3] - self.boxcoords[1]
+        self.current_h += h_increment
+
+    def text_wrap(self, text, font, size, max_width, alignment="c", cbox=False, offset=0):
 
         font_t = ImageFont.truetype(font, size)
         wordlist = text.split(" ")
@@ -68,7 +92,12 @@ class Frame:
         if textlist[0] == "\n":
             textlist.pop(0)
 
-        self.draw_text(" ".join(textlist), font, size)
+        if alignment == "c":
+            self.draw_center_text(" ".join(textlist), font, size, cbox=cbox, add_offset=offset)
+        elif alignment == "r":
+            self.draw_right_text(" ".join(textlist), font, size, cbox=cbox, add_offset=offset)
+        elif alignment == "l":
+            self.draw_left_text(" ".join(textlist), font, size, cbox=cbox, add_offset=offset)
 
     def draw_underline(self, offfset, w):
         x1, y1 = self.boxcoords[0], self.boxcoords[3] + offfset
@@ -106,21 +135,24 @@ def create_date():
     front.draw_underline(offfset=3, w=2)
     front.show()
 
-def create_quote():
-
-    quote = "\"Het leven is een aaneenschakeling van teleurstellingen en dan ga je dood.\""
+def create_quote(quote, author):
 
     frame = Frame()
 
-    frame.paste_im("Images/quote_header.png")
-    frame.draw_line()
+    frame.add_whitespace(10)
+    frame.paste_im("Images/dot_line.png")
     frame.add_whitespace(20)
-    frame.draw_line()
-    frame.text_wrap(quote, linux, 35, 300)
-    frame.draw_line()
-    frame.add_whitespace(35)
-    frame.draw_line()
+    frame.paste_im("Images/quote_header.png")
+    frame.add_whitespace(20)
+    frame.text_wrap(quote, normal, 35, 300)
+    frame.add_whitespace(10)
+    frame.text_wrap(author, product, 20, 100, alignment="r", offset=0)
+    frame.add_whitespace(20)
 
     frame.show()
 
-create_quote()
+
+quote = "\"Ik haat honden, behalve als ze tussen een broodje liggen.\""
+author = "- Matthijs"
+
+create_quote(quote, author)

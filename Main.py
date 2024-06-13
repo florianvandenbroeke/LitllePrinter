@@ -13,6 +13,9 @@ retrolight = "Retrolight.ttf"
 london = "Old London.ttf"
 linux = "Linux.ttf"
 normal = "new normal.ttf"
+times = "Times New Roman.ttf"
+futura = "futura medium bt.ttf"
+futura_light = "futura light bt.ttf"
 
 
 class Frame:
@@ -47,6 +50,22 @@ class Frame:
             self.d.rectangle(self.boxcoords, outline="black")
         h_increment = self.boxcoords[3] - self.boxcoords[1]
         self.current_h += h_increment
+
+    def draw_width(self, text, font, width, offset=0, alignment="c"):
+        size = 1
+        self.boxcoords = self.d.textbbox((0, 0), text, ImageFont.truetype(font, size))
+        while self.boxcoords[2] - self.boxcoords[0] <= width:
+            size += 1
+            self.boxcoords = self.d.textbbox((0, 0), text, ImageFont.truetype(font, size))
+
+        if alignment == "c":
+            self.draw_center_text(text, font, size, add_offset=offset)
+        elif alignment == "r":
+            self.draw_right_text(text, font, size, add_offset=offset)
+        elif alignment == "l":
+            self.draw_left_text(text, font, size, add_offset=offset)
+
+
 
     def draw_left_text(self, text, font, size, cbox=False, add_offset=0):
         font = ImageFont.truetype(font, size)
@@ -118,22 +137,17 @@ class Frame:
         self.image.show()
 
 
-def create_date():
+def create_date(dayword, day, month, h, m):
 
-    front = Frame()
+    frame = Frame()
 
-    front.add_whitespace(25)
-    front.draw_text("JANUARI", harlem_deco, 45)
-    front.draw_underline(offfset=22, w=2)
-    front.add_whitespace(22)
-    front.draw_text("18", market_deco, 200)
-    front.add_whitespace(27)
-    front.draw_text("Donderdag", franchise, 55)
-    front.draw_sidebars(offset=10, w=3)
-    front.add_whitespace(25)
-    front.draw_text("Dit is een voorbeeld van een tekst die over meerdere ljnen moet komen", london, 50)
-    front.draw_underline(offfset=3, w=2)
-    front.show()
+    frame.add_whitespace(10)
+    frame.draw_width(dayword, franchise, 320)
+    frame.add_whitespace(15)
+    frame.draw_width(f"{day} {month} | {h}:{m}", futura, 320)
+    frame.add_whitespace(10)
+
+    frame.show()
 
 def create_quote(quote, author):
 
@@ -146,13 +160,15 @@ def create_quote(quote, author):
     frame.add_whitespace(20)
     frame.text_wrap(quote, normal, 35, 300)
     frame.add_whitespace(10)
-    frame.text_wrap(author, product, 20, 100, alignment="r", offset=0)
+    frame.text_wrap(f"- {author}", product, 20, 100, alignment="r", offset=15)
     frame.add_whitespace(20)
 
     frame.show()
 
 
 quote = "\"Ik haat honden, behalve als ze tussen een broodje liggen.\""
-author = "- Matthijs"
+author = "Matthijs"
+dayword, day, month, h, m = "Thursday", "13", "September", "23", "55"
 
-create_quote(quote, author)
+# create_quote(quote, author)
+# create_date(dayword, day, month, h, m)

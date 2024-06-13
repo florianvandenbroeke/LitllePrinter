@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 
-url = requests.get("https://www.vrt.be/vrtnieuws/en.rss.articles.xml")
+url = requests.get("https://www.vrt.be/vrtnieuws/nl.rss.articles.xml")
 
 soup = BeautifulSoup(url.content, "lxml")
 entries = soup.find_all('entry')

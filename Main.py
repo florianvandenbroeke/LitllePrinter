@@ -142,6 +142,20 @@ class Frame:
         self.image.show()
 
 
+def stitch_images(imagelist):
+
+    totalheight = sum([image.height for image in imagelist])
+    height = 0
+
+    image = Image.new("RGB", (384, totalheight), "white")
+
+    for im in imagelist:
+        image.paste(im, box=(0, height))
+        height += im.height
+
+    image.show()
+
+
 def create_date(dayword, day, month, h, m):
     frame = Frame()
 
@@ -152,6 +166,8 @@ def create_date(dayword, day, month, h, m):
     frame.add_whitespace(10)
 
     frame.show()
+
+    return frame.image
 
 
 def create_quote(quote, author):
@@ -168,6 +184,8 @@ def create_quote(quote, author):
     frame.add_whitespace(20)
 
     frame.show()
+
+    return frame.image
 
 
 def create_news(items):
@@ -189,6 +207,8 @@ def create_news(items):
         frame.add_whitespace(16)
 
     frame.show()
+
+    return frame.image
 
 
 quote = "\"Ik haat honden, behalve als ze tussen een broodje liggen.\""
@@ -410,6 +430,8 @@ items = [('Tesla-aandeelhouders keuren miljardenbonus voor Musk goed',
          'Minder praten over klimaat, meer over industrie: dit blijft over van de Europese Green Deal na de verkiezingen',
          'Ondanks de ruk naar rechts tijdens de Europese verkiezingen lijken de fundamenten van het Europees klimaatbeleid overeind te zullen blijven. De tijd van nieuwe, hoge doelstellingen is voorlopig wel voorbij. En het zal nog gaan spannen om enkele symbooldossiers zoals de natuurherstelwet en het verbod op benzinewagens.')]
 
-create_quote(quote, author)
-create_date(dayword, day, month, h, m)
-create_news(titles)
+quote_image = create_quote(quote, author)
+date_image = create_date(dayword, day, month, h, m)
+news_image = create_news(titles)
+
+stitch_images([date_image, news_image, quote_image])

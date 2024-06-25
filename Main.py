@@ -176,7 +176,7 @@ def create_quote(quote, author):
 
     frame.paste_im("Images/dot_line.png")
     frame.add_whitespace(20)
-    frame.paste_im("Images/quote_header2.png")
+    frame.paste_im("Images/quote_header.png")
     frame.add_whitespace(20)
     frame.text_wrap(quote, normal, 35, 300)
     frame.add_whitespace(10)
@@ -191,18 +191,12 @@ def create_quote(quote, author):
 def create_news(items):
     frame = Frame()
 
-    # frame.add_whitespace(10)
     frame.paste_im("Images/dot_line.png")
-    frame.add_whitespace(15)
-    frame.draw_center_text("Today's news", london, 62)
-    frame.add_whitespace(5)
-    frame.draw_line(192 - 150, 192 + 150, 2)
-    frame.add_whitespace(2)
-    frame.draw_line(192 - 150, 192 + 150, 2)
+    frame.add_whitespace(20)
+    frame.paste_im("Images/news_header.png")
+    frame.add_whitespace(20)
 
-    frame.add_whitespace(15)
-
-    for i in range(4):
+    for i in range(3):
         frame.text_wrap(items[i], clab, 20, 350, "r" * (i % 2) + "l" * (not i % 2), 15, spacing=4)
         frame.add_whitespace(16)
 

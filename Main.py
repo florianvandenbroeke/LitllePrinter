@@ -1,4 +1,7 @@
-from PIL import Image, ImageDraw, ImageFont
+import copy
+
+from PIL import Image, ImageDraw, ImageFont, ImageOps
+from dogtest import get_dog
 
 wagner = "NT Wagner.otf"
 franchise = "Franchise.ttf"
@@ -40,6 +43,11 @@ class Frame:
         to_paste = Image.open(path)
         self.image.paste(to_paste, box=(0, self.current_h))
         self.current_h += to_paste.height
+
+    def center_paste(self, im):
+        x = (384 - im.width) // 2
+        self.image.paste(im, box=(x, self.current_h))
+        self.current_h += im.height
 
     def add_whitespace(self, space):
         self.current_h += space
@@ -130,13 +138,6 @@ class Frame:
         self.d.line((x1, y1, x2, y2), "black", width=w)
         self.current_h += offfset + w
 
-    def draw_sidebars(self, offset, w):
-        x1, y1 = self.boxcoords[0] - offset, self.boxcoords[1]
-        x2, y2 = self.boxcoords[2] + offset, self.boxcoords[3]
-        self.d.line((x1, y1, x1, y2), fill="black", width=w)
-        self.d.line((x1, (y1 + y2) // 2, 0, (y1 + y2) // 2), fill="black", width=w)
-        self.d.line((x2, y1, x2, y2), fill="black", width=w)
-        self.d.line((x2, (y1 + y2) // 2, self.width, (y1 + y2) // 2), fill="black", width=w)
 
     def show(self):
         self.image = self.image.crop((0, 0, self.width, self.current_h))
@@ -197,12 +198,13 @@ def create_news(items):
     frame.add_whitespace(20)
 
     for i in range(3):
-        frame.text_wrap(items[i], clab, 20, 350, "r" * (i % 2) + "l" * (not i % 2), 15, spacing=4)
+        frame.text_wrap(items[i], clab , 20, 350, "r" * (i % 2) + "l" * (not i % 2), 15, spacing=4)
         frame.add_whitespace(16)
 
     frame.show()
 
     return frame.image
+
 
 def create_birthdays(birhdays):
 
@@ -221,11 +223,37 @@ def create_birthdays(birhdays):
     return frame.image
 
 
+def create_dog(dog_im):
+
+    frame = Frame()
+
+    frame.paste_im("Images/dot_line.png")
+    frame.add_whitespace(20)
+    frame.paste_im("Images/dog_header.png")
+    frame.add_whitespace(20)
+
+    image_width = 280
+    scale_factor = dog_im.width / image_width
+    new_height = dog_im.height / scale_factor
+    dog_im = dog_im.resize((image_width, round(new_height)))
+
+    dog_im = ImageOps.expand(dog_im, 5)
+
+    frame.center_paste(dog_im)
+    frame.add_whitespace(10)
+
+
+
+    frame.show()
+
+    return frame.image
+
+
 quote = "\"Ik haat honden, behalve als ze tussen een broodje liggen.\""
 author = "Matthijs"
 dayword, day, month, h, m = "Tuesday", "25", "June", "15", "47"
-
 birthdays = ["Max", "Florian"]
+dog = get_dog()
 
 titles = ['Tesla-aandeelhouders keuren miljardenbonus voor Musk goed',
           'Derde dodelijk slachtoffer vanonder het puin gehaald na explosie in Hoboken, hulpdiensten zoeken nog 2 vermisten',
@@ -282,5 +310,6 @@ quote_image = create_quote(quote, author)
 date_image = create_date(dayword, day, month, h, m)
 news_image = create_news(titles)
 birthdays_image = create_birthdays(birthdays)
+dog_image = create_dog(dog)
 
-stitch_images([date_image, birthdays_image, news_image, quote_image])
+stitch_images([date_image, birthdays_image, news_image, quote_image, dog_image])

@@ -141,7 +141,7 @@ class Frame:
 
     def show(self):
         self.image = self.image.crop((0, 0, self.width, self.current_h))
-        # self.image.show()
+        self.image.show()
 
 
 def stitch_images(imagelist):
@@ -242,7 +242,20 @@ def create_dog(dog_im):
     frame.center_paste(dog_im)
     frame.add_whitespace(10)
 
+    frame.show()
 
+    return frame.image
+
+
+def create_joke(joke):
+    frame = Frame()
+
+    frame.paste_im("Images/dot_line.png")
+    frame.add_whitespace(20)
+    frame.paste_im("Images/joke_header.png")
+    frame.add_whitespace(20)
+    frame.text_wrap(joke, product, 25, 300)
+    frame.add_whitespace(10)
 
     frame.show()
 
@@ -251,9 +264,12 @@ def create_dog(dog_im):
 
 quote = "\"Ik haat honden, behalve als ze tussen een broodje liggen.\""
 author = "Matthijs"
+joke = "Don't you hate jokes about German sausage? They're the wurst!"
+fact = "Urine from men?s public urinals was sold as a commodity in Ancient Rome. It was used as a dye and for making clothes hard"
+
 dayword, day, month, h, m = "Tuesday", "25", "June", "15", "47"
 birthdays = ["Max", "Florian"]
-dog = get_dog()
+# dog = get_dog()
 
 titles = ['Tesla-aandeelhouders keuren miljardenbonus voor Musk goed',
           'Derde dodelijk slachtoffer vanonder het puin gehaald na explosie in Hoboken, hulpdiensten zoeken nog 2 vermisten',
@@ -306,10 +322,11 @@ titles = ['Tesla-aandeelhouders keuren miljardenbonus voor Musk goed',
           'Maximumstraf van 15 jaar cel voor Roemeen die studente in Gent verkrachtte',
           'Minder praten over klimaat, meer over industrie: dit blijft over van de Europese Green Deal na de verkiezingen']
 
-quote_image = create_quote(quote, author)
-date_image = create_date(dayword, day, month, h, m)
-news_image = create_news(titles)
-birthdays_image = create_birthdays(birthdays)
-dog_image = create_dog(dog)
+# quote_image = create_quote(quote, author)
+# date_image = create_date(dayword, day, month, h, m)
+# news_image = create_news(titles)
+# birthdays_image = create_birthdays(birthdays)
+# dog_image = create_dog(dog)
+joke_image = create_joke(joke)
 
-stitch_images([date_image, birthdays_image, news_image, quote_image, dog_image])
+# stitch_images([date_image, birthdays_image, news_image, quote_image, dog_image])

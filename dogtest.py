@@ -4,5 +4,10 @@ import requests, json
 
 URL = 'https://dog.ceo/api/breeds/image/random'
 
+
 def get_dog():
-    return ImageOps.grayscale(Image.open(BytesIO(requests.get(json.loads(requests.get(URL).content)["message"]).content)))
+    im_url = json.loads(requests.get(URL).content)["message"]
+    return im_url
+
+
+print(get_dog())

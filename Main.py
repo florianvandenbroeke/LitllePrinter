@@ -1,7 +1,8 @@
 import copy
 
 from PIL import Image, ImageDraw, ImageFont, ImageOps
-from dogtest import get_dog
+import requests
+from io import BytesIO
 
 wagner = "NT Wagner.otf"
 franchise = "Franchise.ttf"
@@ -47,6 +48,22 @@ class Frame:
 
     def center_paste(self, im):
         x = (384 - im.width) // 2
+        self.image.paste(im, box=(x, self.current_h))
+        self.current_h += im.height
+
+    def paste_URL(self, url, width, border=0):
+
+        im_data = requests.get(url).content
+        stream = BytesIO(im_data)
+        im = ImageOps.grayscale(Image.open(stream))
+
+        scale_factor = im.width / width
+        new_height = im.height / scale_factor
+        im = im.resize((width, round(new_height)))
+
+        im = ImageOps.expand(im, border)
+
+        x = (384 - width) // 2
         self.image.paste(im, box=(x, self.current_h))
         self.current_h += im.height
 
@@ -224,7 +241,7 @@ def create_birthdays(birhdays):
     return frame.image
 
 
-def create_dog(dog_im):
+def create_dog(dog_URL):
 
     frame = Frame()
 
@@ -232,15 +249,7 @@ def create_dog(dog_im):
     frame.add_whitespace(20)
     frame.paste_im("Images/dog_header.png")
     frame.add_whitespace(20)
-
-    image_width = 280
-    scale_factor = dog_im.width / image_width
-    new_height = dog_im.height / scale_factor
-    dog_im = dog_im.resize((image_width, round(new_height)))
-
-    dog_im = ImageOps.expand(dog_im, 5)
-
-    frame.center_paste(dog_im)
+    frame.paste_URL(dog_URL, 280, border=3)
     frame.add_whitespace(15)
 
     frame.show()
@@ -290,7 +299,7 @@ fact = "Urine from men's public urinals was sold as a commodity in Ancient Rome.
 
 dayword, day, month, h, m = "Tuesday", "25", "June", "15", "47"
 birthdays = ["Max", "Florian"]
-dog = get_dog()
+dog = "https://images.dog.ceo/breeds/gaddi-indian/Gaddi.jpg"
 
 titles = ['Tesla-aandeelhouders keuren miljardenbonus voor Musk goed',
           'Derde dodelijk slachtoffer vanonder het puin gehaald na explosie in Hoboken, hulpdiensten zoeken nog 2 vermisten',
@@ -351,4 +360,5 @@ dog_image = create_dog(dog)
 joke_image = create_joke(joke)
 fact_image = create_fact(fact)
 
-stitch_images([date_image, birthdays_image, news_image, quote_image, dog_image, joke_image, fact_image])
+# stitch_images([date_image, birthdays_image, news_image, quote_image, dog_image, joke_image, fact_image])
+stitch_images([dog_image])

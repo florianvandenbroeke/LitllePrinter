@@ -256,8 +256,48 @@ def create_dog(dog_URL):
 
     return frame.image
 
+def create_picture(pic_URL, pic_desc):
+
+    frame = Frame()
+
+    frame.paste_im("Images/dot_line.png")
+    frame.add_whitespace(20)
+    frame.paste_im("Images/picture_header.png")
+    frame.add_whitespace(20)
+    frame.paste_URL(pic_URL, 384)
+    frame.add_whitespace(15)
+    frame.text_wrap(pic_desc, futura, 15, 300, spacing=1)
+    frame.add_whitespace(15)
+
+    frame.show()
+
+    return frame.image
+
+
+def create_history(title, year):
+
+    frame = Frame()
+
+    frame.paste_im("Images/dot_line.png")
+    frame.add_whitespace(20)
+    frame.paste_im("Images/history_header.png")
+    frame.add_whitespace(20)
+    frame.text_wrap(str(year), market_deco, 50, 300, alignment="c", offset=0)
+    frame.add_whitespace(5)
+    swash = Image.open("Images/swash.png")
+    swash = swash.resize((swash.width // 10, swash.height // 10))
+    frame.center_paste(swash)
+    frame.add_whitespace(10)
+    frame.text_wrap(title, times, 20, 360, alignment="c", offset=0)
+    frame.add_whitespace(15)
+
+    frame.show()
+
+    return frame.image
+
 
 def create_joke(joke):
+
     frame = Frame()
 
     frame.paste_im("Images/dot_line.png")
@@ -272,6 +312,7 @@ def create_joke(joke):
 
 
 def create_fact(fact):
+
     frame = Frame()
 
     frame.paste_im("Images/dot_line.png")
@@ -300,6 +341,9 @@ fact = "Urine from men's public urinals was sold as a commodity in Ancient Rome.
 dayword, day, month, h, m = "Tuesday", "25", "June", "15", "47"
 birthdays = ["Max", "Florian"]
 dog = "https://images.dog.ceo/breeds/gaddi-indian/Gaddi.jpg"
+# picture = ('https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/20100723_Miyajima_4904.jpg/640px-20100723_Miyajima_4904.jpg', 'The floating torii gate of the Itsukushima Shrine in Japan, during low tide')
+picture = ('https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Vasco_da_Gama_Bridge_B%26W_%28crop2%29.jpg/640px-Vasco_da_Gama_Bridge_B%26W_%28crop2%29.jpg', 'Vasco da Gama Bridge (Ponte Vasco da Gama), Lisbon, Portugal')
+history = ('Julia Gardiner (pictured) married President John Tyler at the Church of the Ascension in New York, becoming the first lady of the United States.', 1844)
 
 titles = ['Tesla-aandeelhouders keuren miljardenbonus voor Musk goed',
           'Derde dodelijk slachtoffer vanonder het puin gehaald na explosie in Hoboken, hulpdiensten zoeken nog 2 vermisten',
@@ -359,6 +403,9 @@ birthdays_image = create_birthdays(birthdays)
 dog_image = create_dog(dog)
 joke_image = create_joke(joke)
 fact_image = create_fact(fact)
+picture_image = create_picture(picture[0], picture[1])
+history_image = create_history(history[0], history[1])
 
-# stitch_images([date_image, birthdays_image, news_image, quote_image, dog_image, joke_image, fact_image])
-stitch_images([dog_image])
+
+stitch_images([date_image, birthdays_image, news_image, quote_image, dog_image, joke_image, fact_image, picture_image, history_image])
+# stitch_images([history_image])

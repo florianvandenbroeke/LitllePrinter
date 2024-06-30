@@ -67,7 +67,7 @@ def get_birthdays(calendar_name):
         print("An error occurred: ", error)
 
 
-def get_appointments(calendar="primary"):
+def get_appointments(calendar="primary", date_offset=0):
 
     creds = authorize()
 
@@ -75,17 +75,18 @@ def get_appointments(calendar="primary"):
 
         service = build("calendar", "v3", credentials=creds)
 
-        now = dt.datetime.utcnow().isoformat() + "Z"
+        today = dt.datetime.now().date()
+        day = today + dt.timedelta(days=date_offset)
+        min_time = dt.datetime.combine(day, dt.time(0, 0, 0)).isoformat() + "+02:00"
+        max_time = dt.datetime.combine(day, dt.time(23, 59, 59)).isoformat() + "+02:00"
 
-        appointments = service.events().list(calendarId=calendar, timeMin=now, maxResults=5, orderBy="startTime", singleEvents=True).execute()
+        appointments = service.events().list(calendarId=calendar, timeMin=min_time, timeMax=max_time, orderBy="startTime", singleEvents=True).execute()
 
-        for appointment in appointments["items"]:
-            title = appointment["summary"]
-            start = appointment["start"]["date"] if appointment["start"].get("date") else appointment["start"]["dateTime"]
-            end = appointment["end"]["date"] if appointment["end"].get("date") else appointment["end"]["dateTime"]
-            print(f"{start} - {end}: {title}")
+        titles = [event["summary"] for event in appointments["items"]]
+        start_time = [event["start"].get("dateTime") for event in appointments["items"]]
+        end_time = [event["end"].get("dateTime") for event in appointments["items"]]
 
-        # return [birthday["summary"] for birthday in birthdays["items"]]
+        return [event for event in zip(titles, start_time, end_time)]
 
     except HttpError as error:
         print("An error occurred: ", error)
@@ -93,4 +94,4 @@ def get_appointments(calendar="primary"):
 
 # print(get_list("UHhMeHVYX2dhaGZWdGJ2ag"))
 # print(get_birthdays("422aed951e577227681ab482cbc171bb278be3e292971fe0e7bda901c32ce43f@group.calendar.google.com"))
-get_appointments()
+# print(get_appointments(date_offset=0))

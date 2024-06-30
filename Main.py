@@ -3,6 +3,7 @@ import copy
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 import requests
 from io import BytesIO
+import datetime as dt
 
 wagner = "NT Wagner.otf"
 franchise = "Franchise.ttf"
@@ -26,6 +27,7 @@ mermaid = "Mermaid.ttf"
 paper = "Paper Banner.ttf"
 party = "Party.ttf"
 payfair = "Payfair.ttf"
+product_bold = "Product Sans Bold.ttf"
 
 
 class Frame:
@@ -37,9 +39,8 @@ class Frame:
         self.d = ImageDraw.Draw(self.image)
         self.current_h = 0
 
-    def draw_line(self, start_x, end_x, width):
-        self.d.rectangle((start_x, self.current_h, end_x, self.current_h + width - 1), fill="black", outline=0, width=0)
-        self.current_h += width
+    def draw_line(self, coords, width):
+        self.d.line(coords, fill="black", width=width)
 
     def paste_im(self, path):
         to_paste = Image.open(path)
@@ -333,6 +334,37 @@ def create_fact(fact):
     return frame.image
 
 
+def create_appointments(appointments):
+
+    frame = Frame()
+    frame.add_whitespace(0)
+
+    for appointment in appointments:
+
+        title, start_time, end_time = appointment
+
+        if start_time:
+            start_time = dt.datetime.fromisoformat(start_time).strftime("%H:%M")
+            end_time = dt.datetime.fromisoformat(end_time).strftime("%H:%M")
+
+            start_h = frame.current_h
+            frame.text_wrap(f"{start_time} - {end_time}", product_bold, 20, 350, alignment="l", offset=10)
+            frame.add_whitespace(5)
+            frame.text_wrap(title, product, 22, 350, alignment="l", offset=10)
+            end_h = frame.current_h
+            frame.draw_line((5, start_h, 5, end_h), 2)
+            frame.add_whitespace(8)
+
+        else:
+            frame.text_wrap(title, product_bold, 22, 350, alignment="l", offset=7)
+            frame.add_whitespace(8)
+
+    frame.show()
+
+    return frame.image
+
+
+
 quote = "\"Ik haat honden, behalve als ze tussen een broodje liggen.\""
 author = "Matthijs"
 joke = "Don't you hate jokes about German sausage? They're the wurst!"
@@ -340,10 +372,11 @@ fact = "Urine from men's public urinals was sold as a commodity in Ancient Rome.
 
 dayword, day, month, h, m = "Tuesday", "25", "June", "15", "47"
 birthdays = ["Max", "Florian"]
-dog = "https://images.dog.ceo/breeds/gaddi-indian/Gaddi.jpg"
+# dog = "https://images.dog.ceo/breeds/gaddi-indian/Gaddi.jpg"
 # picture = ('https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/20100723_Miyajima_4904.jpg/640px-20100723_Miyajima_4904.jpg', 'The floating torii gate of the Itsukushima Shrine in Japan, during low tide')
 picture = ('https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Vasco_da_Gama_Bridge_B%26W_%28crop2%29.jpg/640px-Vasco_da_Gama_Bridge_B%26W_%28crop2%29.jpg', 'Vasco da Gama Bridge (Ponte Vasco da Gama), Lisbon, Portugal')
 history = ('Julia Gardiner (pictured) married President John Tyler at the Church of the Ascension in New York, becoming the first lady of the United States.', 1844)
+appointments = [('Uitstap', None, None), ('Belangrijke vergadering', '2024-06-30T22:00:00+02:00', '2024-06-30T23:00:00+02:00'), ('Belangrijke vergadering', '2024-06-30T22:00:00+02:00', '2024-06-30T23:00:00+02:00')]
 
 titles = ['Tesla-aandeelhouders keuren miljardenbonus voor Musk goed',
           'Derde dodelijk slachtoffer vanonder het puin gehaald na explosie in Hoboken, hulpdiensten zoeken nog 2 vermisten',
@@ -400,12 +433,13 @@ quote_image = create_quote(quote, author)
 date_image = create_date(dayword, day, month, h, m)
 news_image = create_news(titles)
 birthdays_image = create_birthdays(birthdays)
-dog_image = create_dog(dog)
+# dog_image = create_dog(dog)
 joke_image = create_joke(joke)
 fact_image = create_fact(fact)
 picture_image = create_picture(picture[0], picture[1])
 history_image = create_history(history[0], history[1])
+appointments_image = create_appointments(appointments)
 
 
-stitch_images([date_image, birthdays_image, news_image, quote_image, dog_image, joke_image, fact_image, picture_image, history_image])
-# stitch_images([history_image])
+# stitch_images([date_image, birthdays_image, news_image, quote_image, dog_image, joke_image, fact_image, picture_image, history_image])
+stitch_images([date_image, birthdays_image, appointments_image, news_image, joke_image])

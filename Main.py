@@ -4,6 +4,7 @@ from PIL import Image, ImageDraw, ImageFont, ImageOps
 import requests
 from io import BytesIO
 import datetime as dt
+from Google import get_list
 
 wagner = "NT Wagner.otf"
 franchise = "Franchise.ttf"
@@ -41,6 +42,9 @@ class Frame:
 
     def draw_line(self, coords, width):
         self.d.line(coords, fill="black", width=width)
+
+    def draw_rect(self, coords, width):
+        self.d.rectangle(coords, outline="black", width=width)
 
     def paste_im(self, path):
         to_paste = Image.open(path)
@@ -364,6 +368,31 @@ def create_appointments(appointments):
     return frame.image
 
 
+def create_list(items, list_name):
+
+    frame = Frame()
+
+    frame.add_whitespace(10)
+    frame.draw_width(list_name, clab_bold, 360)
+    frame.add_whitespace(5)
+
+    if len(items):
+        for item in items:
+            start_h = frame.current_h
+            frame.text_wrap(item, clab, 30, 360, alignment="l", offset=35)
+            end_h = frame.current_h
+            h = (start_h + end_h) // 2
+            frame.draw_rect((12, h-8, 28, h+8), 2)
+            frame.add_whitespace(12)
+    else:
+        frame.draw_left_text("No items on this list!", product, 25, add_offset=12)
+        frame.add_whitespace(12)
+
+    frame.show()
+
+    return frame.image
+
+
 
 quote = "\"Ik haat honden, behalve als ze tussen een broodje liggen.\""
 author = "Matthijs"
@@ -377,6 +406,7 @@ birthdays = ["Max", "Florian"]
 picture = ('https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Vasco_da_Gama_Bridge_B%26W_%28crop2%29.jpg/640px-Vasco_da_Gama_Bridge_B%26W_%28crop2%29.jpg', 'Vasco da Gama Bridge (Ponte Vasco da Gama), Lisbon, Portugal')
 history = ('Julia Gardiner (pictured) married President John Tyler at the Church of the Ascension in New York, becoming the first lady of the United States.', 1844)
 appointments = [('Uitstap', None, None), ('Belangrijke vergadering', '2024-06-30T22:00:00+02:00', '2024-06-30T23:00:00+02:00'), ('Belangrijke vergadering', '2024-06-30T22:00:00+02:00', '2024-06-30T23:00:00+02:00')]
+list = get_list("UHhMeHVYX2dhaGZWdGJ2ag")
 
 titles = ['Tesla-aandeelhouders keuren miljardenbonus voor Musk goed',
           'Derde dodelijk slachtoffer vanonder het puin gehaald na explosie in Hoboken, hulpdiensten zoeken nog 2 vermisten',
@@ -439,7 +469,8 @@ fact_image = create_fact(fact)
 picture_image = create_picture(picture[0], picture[1])
 history_image = create_history(history[0], history[1])
 appointments_image = create_appointments(appointments)
+list_image = create_list(list, "Boodschappenlijst")
 
 
 # stitch_images([date_image, birthdays_image, news_image, quote_image, dog_image, joke_image, fact_image, picture_image, history_image])
-stitch_images([date_image, birthdays_image, appointments_image, news_image, joke_image])
+stitch_images([list_image])

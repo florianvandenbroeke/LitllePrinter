@@ -1,6 +1,8 @@
 import datetime as dt
 import requests
 import json
+from PIL import Image, ImageOps
+from io import BytesIO
 from random import randint
 
 def get_picture():
@@ -8,13 +10,17 @@ def get_picture():
     today = dt.datetime.now()
     date = today.strftime("%Y/%m/%d")
 
-    URL = "https://api.wikimedia.org/feed/v1/wikipedia/en/featured/" + "2024/06/23"
-    response = json.loads(requests.get(URL).text)
+    URL = "https://api.wikimedia.org/feed/v1/wikipedia/en/featured/" + date
+    response = json.loads(requests.get(URL, timeout=10).text)
 
     im_URL = response["image"]["thumbnail"]["source"]
     im_desc = response["image"]["description"]["text"]
 
-    return im_URL, im_desc
+    im_data = requests.get(im_URL, timeout=10).content
+    stream = BytesIO(im_data)
+    im = ImageOps.grayscale(Image.open(stream))
+
+    return im, im_desc
 
 
 def get_history():
@@ -30,5 +36,3 @@ def get_history():
     year = eventlist[event]["year"]
 
     return title, year
-
-print(get_history())

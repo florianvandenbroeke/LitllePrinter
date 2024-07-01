@@ -7,7 +7,8 @@ URL = 'https://dog.ceo/api/breeds/image/random'
 
 def get_dog():
     im_url = json.loads(requests.get(URL).content)["message"]
-    return im_url
+    im_data = requests.get(im_url).content
+    stream = BytesIO(im_data)
+    im = ImageOps.grayscale(Image.open(stream))
+    return im
 
-
-print(get_dog())

@@ -51,7 +51,13 @@ class Frame:
         self.image.paste(to_paste, box=(0, self.current_h))
         self.current_h += to_paste.height
 
-    def center_paste(self, im):
+    def center_paste(self, im, width, border=0):
+        scale_factor = im.width / width
+        new_height = im.height / scale_factor
+        im = im.resize((width, round(new_height)))
+
+        im = ImageOps.expand(im, border)
+
         x = (384 - im.width) // 2
         self.image.paste(im, box=(x, self.current_h))
         self.current_h += im.height
@@ -161,10 +167,8 @@ class Frame:
         self.d.line((x1, y1, x2, y2), "black", width=w)
         self.current_h += offfset + w
 
-
     def show(self):
-        self.image = self.image.crop((0, 0, self.width, self.current_h))
-        # self.image.show()
+        return self.image.crop((0, 0, self.width, self.current_h))
 
 
 def stitch_images(imagelist):
@@ -190,9 +194,7 @@ def create_date(dayword, day, month, h, m):
     frame.draw_width(f"{day} {month} | {h}:{m}", futura, 320)
     frame.add_whitespace(10)
 
-    frame.show()
-
-    return frame.image
+    return frame.show()
 
 
 def create_quote(quote, author):
@@ -207,9 +209,7 @@ def create_quote(quote, author):
     frame.text_wrap(f"- {author}", product, 20, 100, alignment="r", offset=15)
     frame.add_whitespace(20)
 
-    frame.show()
-
-    return frame.image
+    return frame.show()
 
 
 def create_news(items):
@@ -224,9 +224,7 @@ def create_news(items):
         frame.text_wrap(items[i], clab , 20, 350, "r" * (i % 2) + "l" * (not i % 2), 15, spacing=4)
         frame.add_whitespace(16)
 
-    frame.show()
-
-    return frame.image
+    return frame.show()
 
 
 def create_birthdays(birhdays):
@@ -241,12 +239,10 @@ def create_birthdays(birhdays):
         frame.text_wrap(name, party, 45, 200)
         frame.add_whitespace(10)
 
-    frame.show()
-
-    return frame.image
+    return frame.show()
 
 
-def create_dog(dog_URL):
+def create_dog(dog):
 
     frame = Frame()
 
@@ -254,14 +250,13 @@ def create_dog(dog_URL):
     frame.add_whitespace(20)
     frame.paste_im("Images/dog_header.png")
     frame.add_whitespace(20)
-    frame.paste_URL(dog_URL, 280, border=3)
+    frame.center_paste(dog, 280, border=3)
     frame.add_whitespace(15)
 
-    frame.show()
+    return frame.show()
 
-    return frame.image
 
-def create_picture(pic_URL, pic_desc):
+def create_picture(pic, pic_desc):
 
     frame = Frame()
 
@@ -269,14 +264,12 @@ def create_picture(pic_URL, pic_desc):
     frame.add_whitespace(20)
     frame.paste_im("Images/picture_header.png")
     frame.add_whitespace(20)
-    frame.paste_URL(pic_URL, 384)
+    frame.center_paste(pic, 384)
     frame.add_whitespace(15)
     frame.text_wrap(pic_desc, futura, 15, 300, spacing=1)
     frame.add_whitespace(15)
 
-    frame.show()
-
-    return frame.image
+    return frame.show()
 
 
 def create_history(title, year):
@@ -290,15 +283,12 @@ def create_history(title, year):
     frame.text_wrap(str(year), market_deco, 50, 300, alignment="c", offset=0)
     frame.add_whitespace(5)
     swash = Image.open("Images/swash.png")
-    swash = swash.resize((swash.width // 10, swash.height // 10))
-    frame.center_paste(swash)
+    frame.center_paste(swash, width=70)
     frame.add_whitespace(10)
     frame.text_wrap(title, times, 20, 360, alignment="c", offset=0)
     frame.add_whitespace(15)
 
-    frame.show()
-
-    return frame.image
+    return frame.show()
 
 
 def create_joke(joke):
@@ -312,8 +302,7 @@ def create_joke(joke):
     frame.text_wrap(joke, dillan, 25, 300)
     frame.add_whitespace(15)
 
-    frame.show()
-    return frame.image
+    return frame.show()
 
 
 def create_fact(fact):
@@ -326,16 +315,13 @@ def create_fact(fact):
     frame.add_whitespace(8)
 
     bulb = Image.open("Images/bulb.png")
-    bulb = bulb.resize((bulb.width//5, bulb.height//5))
-    frame.center_paste(bulb)
+    frame.center_paste(bulb, 60)
     frame.add_whitespace(10)
 
     frame.text_wrap(fact, product, 22, 350)
     frame.add_whitespace(10)
 
-    frame.show()
-
-    return frame.image
+    return frame.show()
 
 
 def create_appointments(appointments):
@@ -363,9 +349,7 @@ def create_appointments(appointments):
             frame.text_wrap(title, product_bold, 22, 350, alignment="l", offset=7)
             frame.add_whitespace(8)
 
-    frame.show()
-
-    return frame.image
+    return frame.show()
 
 
 def create_list(items, list_name):
@@ -388,9 +372,7 @@ def create_list(items, list_name):
         frame.draw_left_text("No items on this list!", product, 25, add_offset=12)
         frame.add_whitespace(12)
 
-    frame.show()
-
-    return frame.image
+    return frame.show()
 
 
 
@@ -402,6 +384,10 @@ fact = "Urine from men's public urinals was sold as a commodity in Ancient Rome.
 dayword, day, month, h, m = "Tuesday", "25", "June", "15", "47"
 birthdays = ["Max", "Florian"]
 # dog = "https://images.dog.ceo/breeds/gaddi-indian/Gaddi.jpg"
+from dogtest import get_dog
+dog = get_dog()
+from wikipediatest import get_picture
+pic, desc = get_picture()
 # picture = ('https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/20100723_Miyajima_4904.jpg/640px-20100723_Miyajima_4904.jpg', 'The floating torii gate of the Itsukushima Shrine in Japan, during low tide')
 picture = ('https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Vasco_da_Gama_Bridge_B%26W_%28crop2%29.jpg/640px-Vasco_da_Gama_Bridge_B%26W_%28crop2%29.jpg', 'Vasco da Gama Bridge (Ponte Vasco da Gama), Lisbon, Portugal')
 history = ('Julia Gardiner (pictured) married President John Tyler at the Church of the Ascension in New York, becoming the first lady of the United States.', 1844)
@@ -463,14 +449,14 @@ quote_image = create_quote(quote, author)
 date_image = create_date(dayword, day, month, h, m)
 news_image = create_news(titles)
 birthdays_image = create_birthdays(birthdays)
-# dog_image = create_dog(dog)
+dog_image = create_dog(dog)
 joke_image = create_joke(joke)
 fact_image = create_fact(fact)
-picture_image = create_picture(picture[0], picture[1])
+# picture_image = create_picture(pic, desc)
 history_image = create_history(history[0], history[1])
 appointments_image = create_appointments(appointments)
 list_image = create_list(list, "Boodschappenlijst")
 
 
 # stitch_images([date_image, birthdays_image, news_image, quote_image, dog_image, joke_image, fact_image, picture_image, history_image])
-stitch_images([list_image])
+stitch_images([history_image])

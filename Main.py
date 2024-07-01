@@ -23,9 +23,8 @@ fact = "Urine from men's public urinals was sold as a commodity in Ancient Rome.
 dayword, day, month, h, m = "Tuesday", "25", "June", "15", "47"
 birthdays = ["Max", "Florian"]
 # dog = "https://images.dog.ceo/breeds/gaddi-indian/Gaddi.jpg"
-from dogtest import get_dog
-dog = get_dog()
-from wikipediatest import get_picture
+# from Images.dogtest import get_dog
+# dog = get_dog()
 # pic, desc = get_picture()
 # picture = ('https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/20100723_Miyajima_4904.jpg/640px-20100723_Miyajima_4904.jpg', 'The floating torii gate of the Itsukushima Shrine in Japan, during low tide')
 picture = ('https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Vasco_da_Gama_Bridge_B%26W_%28crop2%29.jpg/640px-Vasco_da_Gama_Bridge_B%26W_%28crop2%29.jpg', 'Vasco da Gama Bridge (Ponte Vasco da Gama), Lisbon, Portugal')
@@ -88,7 +87,7 @@ quote_image = Snippets.create_quote(quote, author)
 date_image = Snippets.create_date(dayword, day, month, h, m)
 news_image = Snippets.create_news(titles)
 birthdays_image = Snippets.create_birthdays(birthdays)
-dog_image = Snippets.create_dog(dog)
+# dog_image = Snippets.create_dog(dog)
 joke_image = Snippets.create_joke(joke)
 fact_image = Snippets.create_fact(fact)
 # picture_image = Snippets.create_picture(pic, desc)

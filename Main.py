@@ -374,6 +374,15 @@ def create_list(items, list_name):
 
     return frame.show()
 
+def create_error(msg):
+
+    frame = Frame()
+    frame.add_whitespace(10)
+    frame.text_wrap(msg, product, 20, 380)
+    frame.add_whitespace(10)
+
+    return frame.show()
+
 
 
 quote = "\"Ik haat honden, behalve als ze tussen een broodje liggen.\""
@@ -387,7 +396,7 @@ birthdays = ["Max", "Florian"]
 from dogtest import get_dog
 dog = get_dog()
 from wikipediatest import get_picture
-pic, desc = get_picture()
+# pic, desc = get_picture()
 # picture = ('https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/20100723_Miyajima_4904.jpg/640px-20100723_Miyajima_4904.jpg', 'The floating torii gate of the Itsukushima Shrine in Japan, during low tide')
 picture = ('https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Vasco_da_Gama_Bridge_B%26W_%28crop2%29.jpg/640px-Vasco_da_Gama_Bridge_B%26W_%28crop2%29.jpg', 'Vasco da Gama Bridge (Ponte Vasco da Gama), Lisbon, Portugal')
 history = ('Julia Gardiner (pictured) married President John Tyler at the Church of the Ascension in New York, becoming the first lady of the United States.', 1844)
@@ -456,7 +465,8 @@ fact_image = create_fact(fact)
 history_image = create_history(history[0], history[1])
 appointments_image = create_appointments(appointments)
 list_image = create_list(list, "Boodschappenlijst")
+error_image = create_error("Could not load dog")
 
 
 # stitch_images([date_image, birthdays_image, news_image, quote_image, dog_image, joke_image, fact_image, picture_image, history_image])
-stitch_images([history_image])
+stitch_images([error_image])

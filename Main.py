@@ -1,8 +1,8 @@
 from PIL import Image
 from random import randint
 from Google import get_list, get_appointments, get_birthdays
-from Snippets import create_date, create_birthdays, create_news, create_appointments, stitch_images, create_error, create_dog, create_picture
-from Data import get_date, get_news, get_dog, get_picture
+from Snippets import create_date, create_birthdays, create_news, create_appointments, stitch_images, create_error, create_dog, create_picture, create_quote, create_history, create_joke, create_fact
+from Data import get_date, get_news, get_dog, get_picture, get_quote, get_history, get_joke, get_fact
 
 
 def create_daily():
@@ -20,13 +20,33 @@ def create_daily():
     news_items = get_news()
     news_snippet = create_news(news_items) if news_items else create_error("Unable to load news")
 
-    dog = get_dog()
-    dog_snippet = create_dog(dog) if dog else create_error("Unable to load dog")
+    triv_i = randint(0, 5)
 
-    picture = get_picture()
-    picture_snippet = create_picture(picture) if picture else create_error("Unable to load picture")
+    if triv_i == 0:
+        dog = get_dog()
+        trivia_snippet = create_dog(dog) if dog else create_error("Unable to load \"dog of the day\"")
 
-    stitch_images([date_snippet, birthday_snippet, appointment_snippet, news_snippet, dog_snippet, picture_snippet])
+    elif triv_i == 1:
+        picture = get_picture()
+        trivia_snippet = create_picture(picture) if picture else create_error("Unable to load \"picture of the day\"")
+
+    elif triv_i == 2:
+        quote = get_quote()
+        trivia_snippet = create_quote(quote) if quote else create_error("Unable to load \"quote of the day\"")
+
+    elif triv_i == 3:
+        history = get_history()
+        trivia_snippet = create_history(history) if history else create_error("Unable to load \"history of the day\"")
+
+    elif triv_i == 4:
+        joke = get_joke()
+        trivia_snippet = create_joke(joke) if joke else create_error("Unable to load \"joke of the day\"")
+
+    elif triv_i == 5:
+        fact = get_fact()
+        trivia_snippet = create_fact(fact) if fact else create_error("Unable to load \"fact of the day \"")
+
+    return stitch_images([date_snippet, birthday_snippet, appointment_snippet, news_snippet, trivia_snippet])
 
 
-create_daily()
+create_daily().show()

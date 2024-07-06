@@ -29,16 +29,16 @@ def create_date(datetup):
         return frame.show()
 
 
-def create_quote(quote, author):
+def create_quote(quote_auth):
     frame = Frame()
 
     frame.paste_im("Images/dot_line.png")
     frame.add_whitespace(20)
     frame.paste_im("Images/quote_header.png")
     frame.add_whitespace(20)
-    frame.text_wrap(f"\"{quote}\"", payfair, 28, 300, spacing=1)
+    frame.text_wrap(f"\"{quote_auth[0]}\"", payfair, 28, 300, spacing=1)
     frame.add_whitespace(10)
-    frame.text_wrap(f"- {author}", product, 20, 100, alignment="r", offset=15)
+    frame.text_wrap(f"- {quote_auth[1]}", product, 20, 250, alignment="r", offset=15)
     frame.add_whitespace(20)
 
     return frame.show()
@@ -103,7 +103,7 @@ def create_picture(pic_desc):
     return frame.show()
 
 
-def create_history(title, year):
+def create_history(title_year):
 
     frame = Frame()
 
@@ -111,12 +111,12 @@ def create_history(title, year):
     frame.add_whitespace(20)
     frame.paste_im("Images/history_header.png")
     frame.add_whitespace(20)
-    frame.text_wrap(str(year), market_deco, 50, 300, alignment="c", offset=0)
+    frame.text_wrap(str(title_year[1]), market_deco, 45, 300, alignment="c", offset=0)
     frame.add_whitespace(5)
     swash = Image.open("Images/swash.png")
     frame.center_paste(swash, width=70)
     frame.add_whitespace(10)
-    frame.text_wrap(title, times, 20, 360, alignment="c", offset=0)
+    frame.text_wrap(str(title_year[0]), times, 20, 360, alignment="c", offset=0)
     frame.add_whitespace(15)
 
     return frame.show()
@@ -216,7 +216,7 @@ def create_error(msg):
     return frame.show()
 
 
-def stitch_images(imagelist):
+def stitch_images(imagelist, show=False, save=None):
 
     totalheight = sum([image.height for image in imagelist if image])
     height = 0
@@ -228,4 +228,4 @@ def stitch_images(imagelist):
             image.paste(im, box=(0, height))
             height += im.height
 
-    image.show()
+    return image

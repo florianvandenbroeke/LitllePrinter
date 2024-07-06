@@ -119,22 +119,23 @@ def get_picture():
 
 
 def get_news():
+    try:
+        soup = BeautifulSoup(requests.get("https://www.vrt.be/vrtnieuws/nl.rss.articles.xml", timeout=to).content, "xml")
+        entries = soup.find_all("entry")
+        titles = [entry.title.text for entry in entries]
 
-    soup = BeautifulSoup(requests.get("https://www.vrt.be/vrtnieuws/nl.rss.articles.xml").content, "xml")
-    entries = soup.find_all("entry")
-    titles = [entry.title.text for entry in entries]
-    return titles
+        return titles if titles else None
+
+    except requests.exceptions.RequestException:
+        return None
 
 
 def get_date():
     now = dt.datetime.now()
     weekday = now.strftime("%A")
-    day = str(now.day)
+    day = now.strftime("%d")
     month = now.strftime("%B")
-    hour = str(now.hour)
-    minute = str(now.minute)
+    hour = now.strftime("%H")
+    minute = now.strftime("%M")
 
     return weekday, day, month, hour, minute
-
-
-print(get_date())

@@ -123,17 +123,3 @@ class Frame:
 
     def show(self):
         return self.image.crop((0, 0, self.width, self.current_h))
-
-
-def stitch_images(imagelist):
-
-    totalheight = sum([image.height for image in imagelist])
-    height = 0
-
-    image = Image.new("RGB", (384, totalheight), "white")
-
-    for im in imagelist:
-        image.paste(im, box=(0, height))
-        height += im.height
-
-    image.show()

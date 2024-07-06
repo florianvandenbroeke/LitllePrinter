@@ -16,16 +16,17 @@ market_deco = "market deco.ttf"
 dillan = "Dillan.otf"
 
 
-def create_date(dayword, day, month, h, m):
-    frame = Frame()
+def create_date(datetup):
+    if datetup:
+        frame = Frame()
 
-    frame.add_whitespace(25)
-    frame.draw_width(dayword, franchise, 320)
-    frame.add_whitespace(15)
-    frame.draw_width(f"{day} {month} | {h}:{m}", futura, 320)
-    frame.add_whitespace(10)
+        frame.add_whitespace(25)
+        frame.draw_width(datetup[0], franchise, 320)
+        frame.add_whitespace(15)
+        frame.draw_width(f"{datetup[1]} {datetup[2]} | {datetup[3]}:{datetup[4]}", futura, 320)
+        frame.add_whitespace(10)
 
-    return frame.show()
+        return frame.show()
 
 
 def create_quote(quote, author):
@@ -59,7 +60,6 @@ def create_news(items):
 
 
 def create_birthdays(birhdays):
-
     frame = Frame()
 
     frame.add_whitespace(5)
@@ -87,7 +87,7 @@ def create_dog(dog):
     return frame.show()
 
 
-def create_picture(pic, pic_desc):
+def create_picture(pic_desc):
 
     frame = Frame()
 
@@ -95,9 +95,9 @@ def create_picture(pic, pic_desc):
     frame.add_whitespace(20)
     frame.paste_im("Images/picture_header.png")
     frame.add_whitespace(20)
-    frame.center_paste(pic, 384)
+    frame.center_paste(pic_desc[0], 384)
     frame.add_whitespace(15)
-    frame.text_wrap(pic_desc, futura, 15, 300, spacing=1)
+    frame.text_wrap(pic_desc[1], futura, 15, 300, spacing=1)
     frame.add_whitespace(15)
 
     return frame.show()
@@ -180,7 +180,7 @@ def create_appointments(appointments):
             frame.text_wrap(title, product_bold, 22, 350, alignment="l", offset=7)
             frame.add_whitespace(8)
 
-    return frame.show()
+    return frame.show() if appointments else None
 
 
 def create_list(items, list_name):
@@ -214,3 +214,18 @@ def create_error(msg):
     frame.add_whitespace(10)
 
     return frame.show()
+
+
+def stitch_images(imagelist):
+
+    totalheight = sum([image.height for image in imagelist if image])
+    height = 0
+
+    image = Image.new("RGB", (384, totalheight), "white")
+
+    for im in imagelist:
+        if im:
+            image.paste(im, box=(0, height))
+            height += im.height
+
+    image.show()

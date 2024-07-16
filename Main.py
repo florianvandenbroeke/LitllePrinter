@@ -1,7 +1,6 @@
-from PIL import Image
 from random import randint
 from Google import get_list, get_appointments, get_birthdays
-from Snippets import create_date, create_birthdays, create_news, create_appointments, stitch_images, create_error, create_dog, create_picture, create_quote, create_history, create_joke, create_fact
+from Snippets import create_date, create_birthdays, create_news, create_appointments, stitch_images, create_error, create_dog, create_picture, create_quote, create_history, create_joke, create_fact, create_list
 from Data import get_date, get_news, get_dog, get_picture, get_quote, get_history, get_joke, get_fact
 
 
@@ -47,6 +46,5 @@ def create_daily():
         trivia_snippet = create_fact(fact) if fact else create_error("Unable to load \"fact of the day \"")
 
     return stitch_images([date_snippet, birthday_snippet, appointment_snippet, news_snippet, trivia_snippet])
-
 
 create_daily().show()

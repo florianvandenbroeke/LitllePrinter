@@ -47,4 +47,7 @@ def create_daily():
 
     return stitch_images([date_snippet, birthday_snippet, appointment_snippet, news_snippet, trivia_snippet])
 
-create_daily().show()
+
+def list():
+    return create_list(get_list("UHhMeHVYX2dhaGZWdGJ2ag"), "Boodschappen")
+

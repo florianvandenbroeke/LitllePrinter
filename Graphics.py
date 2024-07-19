@@ -115,6 +115,32 @@ class Frame:
         elif alignment == "l":
             self.draw_left_text(text, font, size, add_offset=offset, spacing=spacing)
 
+    def draw_width_wrap(self, text, font, size, max_width, width, spacing=4):
+        font_t = ImageFont.truetype(font, size)
+        wordlist = text.split(" ")
+        line = []
+        textlist = []
+
+        for word in wordlist:
+
+            line.append(word)
+            linewidth = self.d.textbbox((0, 0), " ".join(line), font=font_t)[2]
+
+            if linewidth > max_width:
+                textlist += [line[:-1]]
+                line = [line[-1]]
+
+        textlist += [line]
+
+        if not textlist[0]:
+            textlist.pop(0)
+
+        linelist = [" ".join(rule).upper() for rule in textlist]
+
+        for line in linelist:
+            self.draw_width(line, font, width)
+            self.current_h += spacing
+
     def draw_underline(self, offfset, w):
         x1, y1 = self.boxcoords[0], self.boxcoords[3] + offfset
         x2, y2 = self.boxcoords[2], self.boxcoords[3] + offfset

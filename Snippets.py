@@ -216,15 +216,14 @@ def create_error(msg):
     return frame.show()
 
 
-def create_message(message, sender=None):
+def create_message(message, sender):
 
     frame = Frame()
     frame.add_whitespace(10)
     frame.draw_width_wrap(message, product_bold, 30, 200, 384, 12)
-    frame.add_whitespace(10)
     if sender:
         frame.draw_width(f"- {sender.upper()}", product, 192, alignment="r")
-    frame.add_whitespace(10)
+        frame.add_whitespace(10)
 
     return frame.show()
 
@@ -242,6 +241,3 @@ def stitch_images(imagelist, show=False, save=None):
             height += im.height
 
     return image
-
-
-create_message("Veel plezier op reis!", "Papa & Nele").show()

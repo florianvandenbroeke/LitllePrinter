@@ -1,11 +1,17 @@
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, request
 from functions import create_daily, list
+from Snippets import create_message
 
 app = Flask(__name__)
 
 
-@app.route("/")
+@app.route("/", methods=["POST", "GET"])
 def home():
+
+    if request.method == "POST":
+        message, sender = request.form["message"], request.form["sender"]
+        create_message(message, sender).show()
+
     return render_template("index.html")
 
 @app.route("/print_overview")

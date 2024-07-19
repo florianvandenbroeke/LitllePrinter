@@ -63,7 +63,7 @@
                 <div class="mb-3">
                     <h1 class="fs-5">Authorization</h1>
                     <label for="APINinjasKey" class="form-label">API Ninjas key</label>
-                    <input class="form-control mb-3" id="APINinjasKey" name="APINinjasKey" value="{{key}}">
+                    <input class="form-control mb-3" id="APINinjasKey" name="APINinjasKey" value="{{set["APINinjasKey"]}}">
                     <button type="button" class="btn btn-primary">Authorize google</button>
                 </div>
                 <div class="mb-3">
@@ -77,27 +77,27 @@
                     </select>
                     <label class="form-label">Enable/disable trivia elements</label>
                     <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" role="switch" id="jokeEnable" name="jokeEnable">
+                        <input class="form-check-input" type="checkbox" role="switch" id="jokeEnable" name="jokeEnable" {{"checked" if "jokeEnable" in set["triviaList"]}}>
                         <label class="form-check-label" for="jokeEnable">Joke of the day</label>
                     </div>
                     <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" role="switch" id="factEnable" name="factEnable">
+                        <input class="form-check-input" type="checkbox" role="switch" id="factEnable" name="factEnable" {{"checked" if "factEnable" in set["triviaList"]}}>
                         <label class="form-check-label" for="factEnable">Fact of the day</label>
                     </div>
                     <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" role="switch" id="quoteEnable" name="quoteEnable">
+                        <input class="form-check-input" type="checkbox" role="switch" id="quoteEnable" name="quoteEnable" {{"checked" if "quoteEnable" in set["triviaList"]}}>
                         <label class="form-check-label" for="quoteEnable">Quote of the day</label>
                     </div>
                     <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" role="switch" id="imageEnable" name="imageEnable">
+                        <input class="form-check-input" type="checkbox" role="switch" id="imageEnable" name="imageEnable" {{"checked" if "imageEnable" in set["triviaList"]}}>
                         <label class="form-check-label" for="imageEnable">Image of the day</label>
                     </div>
                     <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" role="switch" id="historyEnable" name="historyEnable">
+                        <input class="form-check-input" type="checkbox" role="switch" id="historyEnable" name="historyEnable" {{"checked" if "historyEnable" in set["triviaList"]}}>
                         <label class="form-check-label" for="historyEnable">History of the day</label>
                     </div>
                     <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" role="switch" id="dogEnable" name="dogEnable">
+                        <input class="form-check-input" type="checkbox" role="switch" id="dogEnable" name="dogEnable" {{"checked" if "dogEnable" in set["triviaList"]}}>
                         <label class="form-check-label" for="dogEnable">Dog of the day</label>
                     </div>
                 </div>

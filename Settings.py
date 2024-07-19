@@ -12,3 +12,6 @@ def read_settings():
 
 def getAPINinjasKey():
     return read_settings()["APINinjasKey"]
+
+def getTriviaList():
+    return read_settings()["triviaList"]

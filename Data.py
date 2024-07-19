@@ -5,6 +5,7 @@ from PIL import Image, ImageOps
 import datetime as dt
 from random import randint
 from bs4 import BeautifulSoup
+from Settings import getAPINinjasKey
 
 to = 5
 API_ninja_key = "Fpg1VeRz4ELzZ1F+obZHXQ==7jDp8PXkGiEPzxk9"
@@ -33,7 +34,7 @@ def get_quote():
     URL = 'https://api.api-ninjas.com/v1/quotes?category=inspirational'
 
     try:
-        response = requests.get(URL, timeout=to, headers={'X-Api-key': API_ninja_key})
+        response = requests.get(URL, timeout=to, headers={'X-Api-key': getAPINinjasKey()})
 
         if response.status_code == requests.codes.ok:
             response = json.loads(response.text)[0]
@@ -50,7 +51,7 @@ def get_fact():
     URL = 'https://api.api-ninjas.com/v1/facts'
 
     try:
-        response = requests.get(URL, timeout=to, headers={'X-Api-key': API_ninja_key})
+        response = requests.get(URL, timeout=to, headers={'X-Api-key': getAPINinjasKey()})
 
         if response.status_code == requests.codes.ok:
             response = json.loads(response.text)[0]
@@ -67,7 +68,7 @@ def get_joke():
     URL = 'https://api.api-ninjas.com/v1/jokes'
 
     try:
-        response = requests.get(URL, headers={'X-Api-key': API_ninja_key})
+        response = requests.get(URL, headers={'X-Api-key': getAPINinjasKey()})
 
         if response.status_code == requests.codes.ok:
             response = json.loads(response.text)[0]

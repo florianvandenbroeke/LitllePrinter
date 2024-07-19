@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, url_for, request
-from functions import create_daily, list
+from Prints import create_daily, create_tasklist
 from Snippets import create_message
 from Settings import update_settings, read_settings
 from Google import get_tasklists
@@ -22,8 +22,8 @@ def settings():
 
     if request.method == "POST":
         enableList = ["jokeEnable", "factEnable", "quoteEnable", "imageEnable", "historyEnable", "dogEnable"]
-        settings_dict = {"triviaList":[el for el in enableList if request.form.get(el) == "on"]}
-        settings_dict.update({"APINinjasKey":request.form.get("APINinjasKey"), "prefList":request.form.get("prefList")})
+        settings_dict = {"triviaList": [el for el in enableList if request.form.get(el) == "on"]}
+        settings_dict.update({"APINinjasKey": request.form.get("APINinjasKey"), "prefList": request.form.get("prefList")})
         update_settings(settings_dict)
 
     return redirect(url_for("home"))
@@ -37,7 +37,8 @@ def print_overview():
 
 @app.route("/print_list")
 def print_list():
-    list().show()
+    create_tasklist().show()
     return redirect(url_for("home"))
+
 
 app.run(port=5001)

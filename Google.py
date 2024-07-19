@@ -40,7 +40,7 @@ def get_tasklists():
 
         taskslists = service.tasklists().list().execute()
 
-        return {tasklist["id"]:tasklist["title"] for tasklist in taskslists["items"]}
+        return {tasklist["id"]: tasklist["title"] for tasklist in taskslists["items"]}
 
     except HttpError as error:
         print("An error occurred: ", error)
@@ -71,7 +71,7 @@ def get_birthdays(calendar_name):
         service = build("calendar", "v3", credentials=creds)
 
         date = dt.datetime.now().date()
-        min_time = dt.datetime.combine(date, dt.time(0, 0, 1)).isoformat()+ "Z"
+        min_time = dt.datetime.combine(date, dt.time(0, 0, 1)).isoformat() + "Z"
         max_time = dt.datetime.combine(date, dt.time(0, 0, 2)).isoformat() + "Z"
 
         birthdays = service.events().list(calendarId=calendar_name, timeMin=min_time, timeMax=max_time).execute()

@@ -102,7 +102,7 @@ def get_picture():
     try:
         today = dt.datetime.now()
         date = today.strftime("%Y/%m/%d")
-        URL = "https://api.wikimedia.org/feed/v1/wikipedia/en/featured/" + "2024/07/04"
+        URL = "https://api.wikimedia.org/feed/v1/wikipedia/en/featured/" + date
 
         response = json.loads(requests.get(URL, timeout=to).text)
         im_URL = response["image"]["thumbnail"]["source"]

@@ -57,5 +57,5 @@ def create_daily():
     return stitch_images([date_snippet, birthday_snippet, appointment_snippet, news_snippet, trivia_snippet])
 
 
-def list():
+def create_tasklist():
     return create_list(get_list(getPrefList()), get_tasklists()[getPrefList()])

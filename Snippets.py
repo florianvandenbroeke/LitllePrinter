@@ -228,7 +228,7 @@ def create_message(message, sender):
     return frame.show()
 
 
-def stitch_images(imagelist, show=False, save=None):
+def stitch_images(imagelist):
 
     totalheight = sum([image.height for image in imagelist if image])
     height = 0

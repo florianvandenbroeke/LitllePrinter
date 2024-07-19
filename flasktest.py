@@ -2,6 +2,7 @@ from flask import Flask, render_template, redirect, url_for, request
 from functions import create_daily, list
 from Snippets import create_message
 from Settings import update_settings, read_settings
+from Google import get_tasklists
 
 app = Flask(__name__)
 
@@ -13,7 +14,8 @@ def home():
         message, sender = request.form["message"], request.form["sender"]
         create_message(message, sender).show()
 
-    return render_template("index.html", set=read_settings())
+    return render_template("index.html", set=read_settings(), tasklist=get_tasklists())
+
 
 @app.route("/settings", methods=["POST", "GET"])
 def settings():

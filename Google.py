@@ -1,4 +1,3 @@
-import datetime
 import os.path
 import datetime as dt
 
@@ -29,6 +28,22 @@ def authorize():
             token.write(creds.to_json())
 
     return creds
+
+
+def get_tasklists():
+
+    creds = authorize()
+
+    try:
+
+        service = build("tasks", "v1", credentials=creds)
+
+        taskslists = service.tasklists().list().execute()
+
+        return {tasklist["id"]:tasklist["title"] for tasklist in taskslists["items"]}
+
+    except HttpError as error:
+        print("An error occurred: ", error)
 
 
 def get_list(task_list):
@@ -95,3 +110,4 @@ def get_appointments(calendar="primary", date_offset=0):
 # print(get_list("UHhMeHVYX2dhaGZWdGJ2ag"))
 # print(get_birthdays("422aed951e577227681ab482cbc171bb278be3e292971fe0e7bda901c32ce43f@group.calendar.google.com"))
 # print(get_appointments(date_offset=0))
+print(get_tasklists().values())

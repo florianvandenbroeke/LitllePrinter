@@ -64,16 +64,14 @@
                     <h1 class="fs-5">Authorization</h1>
                     <label for="APINinjasKey" class="form-label">API Ninjas key</label>
                     <input class="form-control mb-3" id="APINinjasKey" name="APINinjasKey" value="{{set["APINinjasKey"]}}">
-                    <button type="button" class="btn btn-primary">Authorize google</button>
                 </div>
                 <div class="mb-3">
                     <h1 class="fs-5">Preferences</h1>
                     <label for="prefList" class="form-label">Preferred list</label>
                     <select class="form-select mb-3" aria-label="Default select example" id="prefList" name="prefList">
-                        <option>Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                        {% for key, val in tasklist.items() %}
+                        <option value="{{key}}" {{"selected" if key == set["prefList"]}}>{{val}}</option>
+                        {% endfor %}
                     </select>
                     <label class="form-label">Enable/disable trivia elements</label>
                     <div class="form-check form-switch">

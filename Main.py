@@ -3,6 +3,8 @@ from Prints import create_daily, create_tasklist, print_item
 from Snippets import create_message
 from Settings import update_settings, read_settings
 from Google import get_tasklists
+from GPIO import gpio
+from multiprocessing import Process
 
 app = Flask(__name__)
 
@@ -40,5 +42,8 @@ def print_list():
     print_item(create_tasklist())
     return redirect(url_for("home"))
 
+
+p = Process(target=gpio)
+p.start()
 
 app.run(port=5002)

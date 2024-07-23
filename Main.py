@@ -14,7 +14,7 @@ def home():
 
     if request.method == "POST":
         message, sender = request.form["message"], request.form["sender"]
-        print_message(message, sender)
+        print_message(message, sender, debug)
 
     return render_template("index.html", set=read_settings(), tasklist=get_tasklists())
 

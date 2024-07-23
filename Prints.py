@@ -67,13 +67,13 @@ def print_item(item, debug=False):
         item.show()
 
 
-def print_list(debug):
+def print_list(debug=False):
     print_item(create_list(get_list(getPrefList()), get_tasklists()[getPrefList()]), debug)
 
 
-def print_daily(debug):
+def print_daily(debug=False):
     print_item(create_daily(), debug)
 
 
-def print_message(msg, send, debug):
+def print_message(msg, send, debug=False):
     print_item(create_message(msg, send), debug)

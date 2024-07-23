@@ -37,7 +37,7 @@ def print_overview():
 
 
 @app.route("/print_list")
-def print_list():
+def print_tasklist():
     print_list()
     return redirect(url_for("home"))
 

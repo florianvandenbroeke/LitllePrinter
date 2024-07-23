@@ -1,6 +1,6 @@
 from random import choice
 from Google import get_list, get_appointments, get_birthdays, get_tasklists
-from Snippets import create_date, create_birthdays, create_news, create_appointments, stitch_images, create_error, create_dog, create_picture, create_quote, create_history, create_joke, create_fact, create_list
+from Snippets import create_date, create_birthdays, create_news, create_appointments, stitch_images, create_error, create_dog, create_picture, create_quote, create_history, create_joke, create_fact, create_list, create_message
 from Data import get_date, get_news, get_dog, get_picture, get_quote, get_history, get_joke, get_fact
 from Settings import getTriviaList, getPrefList
 from PIL import Image
@@ -59,10 +59,18 @@ def create_daily():
     return stitch_images([date_snippet, birthday_snippet, appointment_snippet, news_snippet, trivia_snippet])
 
 
-def create_tasklist():
-    return create_list(get_list(getPrefList()), get_tasklists()[getPrefList()])
-
-
 def print_item(item):
     item.transpose(Image.ROTATE_180).save("print.png")
     os.system("lp -o fit-to-page /home/florianvdb/LitllePrinter/print.png")
+
+
+def print_list():
+    print_item(create_list(get_list(getPrefList()), get_tasklists()[getPrefList()]))
+
+
+def print_daily():
+    print_item(create_daily())
+
+
+def print_message(msg, send):
+    print_item(create_message(msg, send))

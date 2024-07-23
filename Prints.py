@@ -61,7 +61,7 @@ def create_daily():
 
 def print_item(item):
     if getDebugMode():
-        item.show()
+        item.save("/home/florianvdb/LitllePrinter/print.png")
     else:
         item.transpose(Image.ROTATE_180).save("/home/florianvdb/LitllePrinter/print.png")
         os.system("lp -o fit-to-page /home/florianvdb/LitllePrinter/print.png")

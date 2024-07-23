@@ -7,13 +7,16 @@ list_button = Button(3)
 calendar_button = Button(4)
 
 
-def gpio():
-    while True:
+# def gpio():
+#     while True:
+#
+#         if daily_button.is_pressed:
+#             print_daily()
+#             sleep(2)
+#
+#         if list_button.is_pressed:
+#             print_list()
+#             sleep(2)
 
-        if daily_button.is_pressed:
-            print_daily()
-            sleep(2)
-
-        if list_button.is_pressed:
-            print_list()
-            sleep(2)
+daily_button.when_pressed = print_daily
+list_button.when_pressed = print_list

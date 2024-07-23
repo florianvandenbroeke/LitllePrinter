@@ -59,21 +59,18 @@ def create_daily():
     return stitch_images([date_snippet, birthday_snippet, appointment_snippet, news_snippet, trivia_snippet])
 
 
-def print_item(item, debug=False):
-    if not debug:
-        item.transpose(Image.ROTATE_180).save("/home/florianvdb/LitllePrinter/print.png")
-        os.system("lp -o fit-to-page /home/florianvdb/LitllePrinter/print.png")
-    else:
-        item.show()
+def print_item(item):
+    item.transpose(Image.ROTATE_180).save("/home/florianvdb/LitllePrinter/print.png")
+    os.system("lp -o fit-to-page /home/florianvdb/LitllePrinter/print.png")
 
 
-def print_list(debug=False):
-    print_item(create_list(get_list(getPrefList()), get_tasklists()[getPrefList()]), debug)
+def print_list():
+    print_item(create_list(get_list(getPrefList()), get_tasklists()[getPrefList()]))
 
 
-def print_daily(debug=False):
-    print_item(create_daily(), debug)
+def print_daily():
+    print_item(create_daily())
 
 
-def print_message(msg, send, debug=False):
-    print_item(create_message(msg, send), debug)
+def print_message(msg, send):
+    print_item(create_message(msg, send))

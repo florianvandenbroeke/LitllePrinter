@@ -7,14 +7,13 @@ from multiprocessing import Process
 
 app = Flask(__name__)
 
-debug = True
 
 @app.route("/", methods=["POST", "GET"])
 def home():
 
     if request.method == "POST":
         message, sender = request.form["message"], request.form["sender"]
-        print_message(message, sender, debug)
+        print_message(message, sender)
 
     return render_template("index.html", set=read_settings(), tasklist=get_tasklists())
 

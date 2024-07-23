@@ -46,4 +46,4 @@ def print_list():
 p = Process(target=gpio)
 p.start()
 
-app.run(port=5002)
+app.run(port=5000, host="192.168.1.23")

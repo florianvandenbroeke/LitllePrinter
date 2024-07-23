@@ -7,6 +7,8 @@ from multiprocessing import Process
 
 app = Flask(__name__)
 
+debug = True
+
 
 @app.route("/", methods=["POST", "GET"])
 def home():

@@ -60,8 +60,12 @@ def create_daily():
 
 
 def print_item(item):
-    item.transpose(Image.ROTATE_180).save("/home/florianvdb/LitllePrinter/print.png")
-    os.system("lp -o fit-to-page /home/florianvdb/LitllePrinter/print.png")
+    global debug
+    if debug:
+        item.show()
+    else:
+        item.transpose(Image.ROTATE_180).save("/home/florianvdb/LitllePrinter/print.png")
+        os.system("lp -o fit-to-page /home/florianvdb/LitllePrinter/print.png")
 
 
 def print_list():

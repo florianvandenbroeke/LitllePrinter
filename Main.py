@@ -43,7 +43,7 @@ def print_tasklist():
     return redirect(url_for("home"))
 
 
-p = Process(target=gpio)
-p.start()
+# p = Process(target=gpio)
+# p.start()
 
 app.run(port=5005, host="192.168.1.23")

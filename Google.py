@@ -15,13 +15,13 @@ def authorize():
     creds = None
 
     if os.path.exists("token.json"):
-        creds = Credentials.from_authorized_user_file("/home/florianvdb/LitllePrinter/token.json")
+        creds = Credentials.from_authorized_user_file("token.json")
 
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            flow = InstalledAppFlow.from_client_secrets_file("/home/florianvdb/LitllePrinter/credentials.json", scopes)
+            flow = InstalledAppFlow.from_client_secrets_file("credentials.json", scopes)
             creds = flow.run_local_server(port=0, open_browser=False)
 
         with open("token.json", "w") as token:

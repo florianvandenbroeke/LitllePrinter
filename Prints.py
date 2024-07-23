@@ -2,7 +2,7 @@ from random import choice
 from Google import get_list, get_appointments, get_birthdays, get_tasklists
 from Snippets import create_date, create_birthdays, create_news, create_appointments, stitch_images, create_error, create_dog, create_picture, create_quote, create_history, create_joke, create_fact, create_list, create_message
 from Data import get_date, get_news, get_dog, get_picture, get_quote, get_history, get_joke, get_fact
-from Settings import getTriviaList, getPrefList
+from Settings import getTriviaList, getPrefList, getDebugMode
 from PIL import Image
 import os
 
@@ -60,8 +60,11 @@ def create_daily():
 
 
 def print_item(item):
-    item.transpose(Image.ROTATE_180).save("/home/florianvdb/LitllePrinter/print.png")
-    os.system("lp -o fit-to-page /home/florianvdb/LitllePrinter/print.png")
+    if getDebugMode():
+        item.show()
+    else:
+        item.transpose(Image.ROTATE_180).save("/home/florianvdb/LitllePrinter/print.png")
+        os.system("lp -o fit-to-page /home/florianvdb/LitllePrinter/print.png")
 
 
 def print_list():

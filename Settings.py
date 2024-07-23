@@ -21,3 +21,7 @@ def getTriviaList():
 
 def getPrefList():
     return read_settings()["prefList"]
+
+
+def getDebugMode():
+    return read_settings()["debugMode"]

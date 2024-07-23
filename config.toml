@@ -1,3 +1,4 @@
-triviaList = [ "jokeEnable", "factEnable", "quoteEnable", "imageEnable", "historyEnable",]
+triviaList = [ "jokeEnable", "factEnable", "quoteEnable", "imageEnable", "historyEnable", "dogEnable",]
 APINinjasKey = "Fpg1VeRz4ELzZ1F+obZHXQ==7jDp8PXkGiEPzxk9"
-prefList = "NDNXTzJna1UtUDBvTDVPdA"
+prefList = "MTgxOTg2MjM2NDgwOTg3NTA5OTg6MDow"
+debugMode = false

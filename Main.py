@@ -24,7 +24,8 @@ def settings():
     if request.method == "POST":
         enableList = ["jokeEnable", "factEnable", "quoteEnable", "imageEnable", "historyEnable", "dogEnable"]
         settings_dict = {"triviaList": [el for el in enableList if request.form.get(el) == "on"]}
-        settings_dict.update({"APINinjasKey": request.form.get("APINinjasKey"), "prefList": request.form.get("prefList")})
+        debug_mode = True if request.form.get("debugMode") else False
+        settings_dict.update({"APINinjasKey": request.form.get("APINinjasKey"), "prefList": request.form.get("prefList"), "debugMode": debug_mode})
         update_settings(settings_dict)
 
     return redirect(url_for("home"))
@@ -42,7 +43,7 @@ def print_tasklist():
     return redirect(url_for("home"))
 
 
-p = Process(target=gpio)
-p.start()
+# p = Process(target=gpio)
+# p.start()
 
-app.run(port=5000, host="192.168.1.23")
+app.run(port=5005)

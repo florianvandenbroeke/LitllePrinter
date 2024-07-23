@@ -2,12 +2,12 @@ import toml
 
 
 def update_settings(settings_dict):
-    with open("config.toml", "w") as file:
+    with open("/home/florianvdb/LitllePrinter/config.toml", "w") as file:
         toml.dump(settings_dict, file)
 
 
 def read_settings():
-    with open("config.toml", "r") as file:
+    with open("/home/florianvdb/LitllePrinter/config.toml", "r") as file:
         return toml.load(file)
 
 

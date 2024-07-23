@@ -18,5 +18,6 @@ calendar_button = Button(4)
 #             print_list()
 #             sleep(2)
 
-daily_button.when_pressed = print_daily
-list_button.when_pressed = print_list
+def gpio():
+    daily_button.when_pressed = print_daily
+    list_button.when_pressed = print_list

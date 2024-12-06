@@ -54,4 +54,4 @@ def print_tasklist():
 p = Process(target=gpio)
 p.start()
 
-app.run(port=5005, host="0.0.0.0")
+app.run(port=5005, host="192.168.50.123")

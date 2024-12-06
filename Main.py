@@ -30,6 +30,14 @@ def settings():
 
     return redirect(url_for("home"))
 
+@app.route("/label", methods=["POST", "GET"])
+def label():
+
+    if request.method == "POST":
+        label_text = request.form["label_text"]
+        print(label_text)
+
+    return redirect(url_for("home"))
 
 @app.route("/print_overview")
 def print_overview():
@@ -43,7 +51,7 @@ def print_tasklist():
     return redirect(url_for("home"))
 
 
-p = Process(target=gpio)
-p.start()
+# p = Process(target=gpio)
+# p.start()
 
-app.run(port=5005, host="192.168.1.23")
+app.run(port=5005, host="0.0.0.0")

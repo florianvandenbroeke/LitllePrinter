@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, url_for, request
-from Prints import print_daily, print_message, print_list
+from Prints import print_daily, print_message, print_list, print_label
 from Settings import update_settings, read_settings
 from Google import get_tasklists
 from GPIO import gpio
@@ -35,7 +35,7 @@ def label():
 
     if request.method == "POST":
         label_text = request.form["label_text"]
-        print(label_text)
+        print_label(label_text)
 
     return redirect(url_for("home"))
 
@@ -51,7 +51,7 @@ def print_tasklist():
     return redirect(url_for("home"))
 
 
-# p = Process(target=gpio)
-# p.start()
+p = Process(target=gpio)
+p.start()
 
 app.run(port=5005, host="0.0.0.0")

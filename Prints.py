@@ -1,6 +1,6 @@
 from random import choice
 from Google import get_list, get_appointments, get_birthdays, get_tasklists
-from Snippets import create_date, create_birthdays, create_news, create_appointments, stitch_images, create_error, create_dog, create_picture, create_quote, create_history, create_joke, create_fact, create_list, create_message
+from Snippets import create_date, create_birthdays, create_news, create_appointments, stitch_images, create_error, create_dog, create_picture, create_quote, create_history, create_joke, create_fact, create_list, create_message, create_label
 from Data import get_date, get_news, get_dog, get_picture, get_quote, get_history, get_joke, get_fact
 from Settings import getTriviaList, getPrefList, getDebugMode
 from PIL import Image
@@ -77,3 +77,7 @@ def print_daily():
 
 def print_message(msg, send):
     print_item(create_message(msg, send))
+
+
+def print_label(labeltext):
+    print_item(create_label(labeltext))

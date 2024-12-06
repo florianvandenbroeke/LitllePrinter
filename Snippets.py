@@ -227,6 +227,15 @@ def create_message(message, sender):
 
     return frame.show()
 
+def create_label(labeltext):
+
+    frame = Frame()
+    frame.add_whitespace(10)
+    frame.text_wrap(labeltext.upper(), product_bold, 30, 200)
+    frame.add_whitespace(10)
+
+    return frame.show()
+
 
 def stitch_images(imagelist):
 
